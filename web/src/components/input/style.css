@@ -1,0 +1,81 @@
+.container-input {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.container-input label {
+  text-transform: uppercase;
+  color: var(--gray-600);
+  transition: color 0.2s;
+}
+
+.container-input:focus-within label {
+  color: var(--blue-base);
+  font-weight: bold;
+}
+
+.container-input.error label {
+  color: var(--danger);
+  font-weight: bold;
+}
+
+input {
+  padding: 16px 8px;
+  color: var(--gray-600);
+  transition: border-color 0.2s;
+  flex: 1;
+  border: none;
+  outline: none;
+}
+
+input::placeholder {
+  color: var(--gray-300);
+}
+
+input:focus {
+  outline: none;
+  border-color: var(--blue-base);
+}
+
+input.error {
+  border-color: var(--danger);
+}
+
+.error-message {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--gray-400);
+  font-size: 12px;
+  margin-top: 4px;
+}
+
+.error-message img {
+  width: 16px;
+  height: 16px;
+}
+
+.input-wrapper {
+  display: flex;
+  align-items: center;
+  border: 1px solid var(--gray-300);
+  border-radius: 8px;
+  transition: border-color 0.2s;
+  padding: 0 8px;
+}
+
+.input-wrapper:focus-within {
+  border-color: var(--blue-base);
+}
+
+.input-wrapper.error {
+  border-color: var(--danger);
+}
+
+.input-prefix {
+  padding: 0 0 0 8px;
+  color: var(--gray-400);
+  user-select: none;
+  font-size: 14px;
+}

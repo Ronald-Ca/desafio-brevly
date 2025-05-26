@@ -1,0 +1,17 @@
+.container-new-link {
+    width: 100%;
+    max-width: 380px;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    padding: 32px;
+    background-color: var(--white);
+    border-radius: 8px;
+}
+
+.container-inputs {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}

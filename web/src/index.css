@@ -1,0 +1,77 @@
+:root {
+  font-family: 'Open Sans', sans-serif;
+
+  /* Blue */
+  --blue-base: #2C46B1;
+  --blue-dark: #2C4091;
+
+  /* Grayscale */
+  --white: #FFFFFF;
+  --gray-100: #F9F9FB;
+  --gray-200: #E4E6EC;
+  --gray-300: #CDCFD5;
+  --gray-400: #74798B;
+  --gray-500: #4D505C;
+  --gray-600: #1F2025;
+
+  /* Feedback */
+  --danger: #B12C4D;
+}
+body {
+  margin: 0;
+  display: flex;
+  place-items: center;
+  min-width: 320px;
+  min-height: 100vh;
+  background-color: var(--gray-200);
+}
+
+h4 {
+  margin: 0;
+  padding: 0;
+}
+
+p {
+  margin: 0;
+  padding: 0;
+}
+
+
+.text-xl {
+  font-size: 24px;
+  line-height: 32px;
+  font-weight: bold;
+  text-transform: none;
+}
+
+.text-lg {
+  font-size: 18px;
+  line-height: 24px;
+  font-weight: bold;
+  text-transform: none;
+}
+
+.text-md {
+  font-size: 14px;
+  line-height: 18px;
+  font-weight: 600; 
+  text-transform: none;
+}
+
+.text-sm {
+  font-size: 12px;
+  line-height: 16px;
+  font-weight: 400; 
+  text-transform: none;
+}
+
+.text-sm--semibold {
+  font-weight: 600;
+}
+
+.text-xs {
+  font-size: 10px;
+  line-height: 14px;
+  font-weight: 400;
+  text-transform: uppercase;
+}
