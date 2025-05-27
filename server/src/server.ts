@@ -4,6 +4,7 @@ import { fastifySwaggerUi } from "@fastify/swagger-ui";
 import fastify from "fastify";
 import { validatorCompiler, serializerCompiler, jsonSchemaTransform, type ZodTypeProvider } from 'fastify-type-provider-zod'
 import { routes } from "./routes";
+import { env } from "./env";
 
 const app = fastify().withTypeProvider<ZodTypeProvider>()
 
@@ -31,6 +32,6 @@ app.register(fastifySwaggerUi, {
 
 app.register(routes)
 
-app.listen({ port: 3333 }).then(() => {
-    console.log('Server is running on port 3333')
+app.listen({ port: env.PORT }).then(() => {
+    console.log(`Server is running on port ${env.PORT}`);
 })
