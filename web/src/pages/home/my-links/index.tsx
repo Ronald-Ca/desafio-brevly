@@ -1,4 +1,3 @@
-import CsvButton from '../../../components/csv-button'
 import Links from '../../../components/links'
 import NoEmptyLinks from '../../../components/no-empty-links'
 import { useDeleteLink, useLinks } from '../../../queries/link'
@@ -6,6 +5,7 @@ import './style.css'
 import { toast } from 'react-toastify'
 import Loading from '../../../components/loading'
 import AlertMessage from '../../../components/alert'
+import DownloadCsvButton from './download-csv-button'
 
 export default function MyLinks() {
     const { data: links, isLoading, refetch } = useLinks()
@@ -67,7 +67,7 @@ export default function MyLinks() {
 
             <div className="header-my-links">
                 <h4 className="text-lg">Meus Links</h4>
-                <CsvButton disabled={links?.length === 0} />
+                <DownloadCsvButton disabled={links?.length === 0} />
             </div>
 
             <div className="list-my-links">

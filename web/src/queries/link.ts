@@ -53,15 +53,10 @@ export const useDeleteLink = ({
 // Download links as CSV
 export const useDownloadLinksCSV = () => {
     return useQuery({
-        queryKey: [...LinksQueryKey.LINKS, 'csv'],
+        queryKey: [LinksQueryKey.LINKS, 'csv'],
         queryFn: async () => {
-            const { data } = await api.get<string>('/link/download-csv', {
-                headers: {
-                    Accept: 'text/csv',
-                },
-                responseType: 'blob',
-            });
-            return data;
+            const { data } = await api.get<{ url: string }>('/link/download-csv');
+            return data.url;
         },
         enabled: false,
     });

@@ -17,5 +17,5 @@
 
 - [x] TypeScript
 - [x] Fastify
-- [ ] Drizzle
+- [x] Drizzle
 - [x] Postgres

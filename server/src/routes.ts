@@ -1,7 +1,11 @@
-import { randomUUID } from "node:crypto";
 import { z } from "zod";
 import { FastifyPluginAsyncZod } from "fastify-type-provider-zod";
-import { PrismaService } from "../prisma/prisma-service";
+import { db } from "./infra/db";
+import { links } from "./infra/db/schemas/links";
+import { eq } from "drizzle-orm";
+import { uuidv7 } from "uuidv7";
+import { Readable } from "node:stream";
+import { uploadFileToStorage } from "./functions/upload-csv";
 
 export const routes: FastifyPluginAsyncZod = async (app) => {
     app.post(
@@ -23,16 +27,20 @@ export const routes: FastifyPluginAsyncZod = async (app) => {
         async (request, reply) => {
             const { link, shortLink } = request.body;
 
-            const exists = await PrismaService.link.findUnique({ where: { shortLink } })
+            const exists = await db
+                .select()
+                .from(links)
+                .where(eq(links.shortLink, shortLink))
+                .then(res => res[0]);
 
-            if (exists) reply.status(409).send({ message: "Link encurtado já existe" });
+            if (exists) {
+                return reply.status(409).send({ message: "Link encurtado já existe" });
+            }
 
-            await PrismaService.link.create({
-                data: {
-                    id: randomUUID(),
-                    link,
-                    shortLink,
-                },
+            await db.insert(links).values({
+                id: uuidv7(),
+                link,
+                shortLink,
             });
 
             return reply.status(201).send(null);
@@ -59,10 +67,10 @@ export const routes: FastifyPluginAsyncZod = async (app) => {
             },
         },
         async (_, reply) => {
-            const allLinks = await PrismaService.link.findMany();
+            const allLinks = await db.select().from(links);
             return reply.status(200).send(allLinks);
         }
-    )
+    );
 
     app.delete(
         "/link/:id",
@@ -76,23 +84,25 @@ export const routes: FastifyPluginAsyncZod = async (app) => {
                 }),
                 response: {
                     204: z.null(),
-                    404: z.object({ message: z.string() })
+                    404: z.object({ message: z.string() }),
                 },
             },
         },
         async (request, reply) => {
             const { id } = request.params;
 
-            try {
-                await PrismaService.link.delete({ where: { id } });
-                return reply.status(204).send();
-            } catch {
+            const deleted = await db.delete(links).where(eq(links.id, id)).returning();
+
+            if (deleted.length === 0) {
                 return reply.status(404).send({ message: "Link not found" });
             }
+
+            return reply.status(204).send();
         }
     );
 
-    app.get("/:shortLink",
+    app.get(
+        "/:shortLink",
         {
             schema: {
                 tags: ["links"],
@@ -108,19 +118,20 @@ export const routes: FastifyPluginAsyncZod = async (app) => {
             },
         },
         async (req, reply) => {
-            const rec = await PrismaService.link.findUnique({
-                where: { shortLink: req.params.shortLink },
-            });
-            console.log('eu')
+            const rec = await db
+                .select()
+                .from(links)
+                .where(eq(links.shortLink, req.params.shortLink))
+                .then(res => res[0]);
 
             if (!rec) {
                 return reply.status(404).send({ message: "Link não encontrado" });
             }
 
-            await PrismaService.link.update({
-                where: { id: rec.id },
-                data: { visits: { increment: 1 } },
-            });
+            await db
+                .update(links)
+                .set({ visits: rec.visits + 1 })
+                .where(eq(links.id, rec.id));
 
             return reply.send({ link: rec.link });
         }
@@ -133,20 +144,40 @@ export const routes: FastifyPluginAsyncZod = async (app) => {
                 tags: ["links"],
                 description: "Download all links in CSV format",
                 operationId: "downloadLinks",
-                response: { 200: z.string() },
+                response: {
+                    200: z.object({ url: z.string().url() }),
+                },
             },
         },
         async (_, reply) => {
-            const allLinks = await PrismaService.link.findMany();
+            console.log("Downloading links as CSV");
+            const allLinks = await db.select().from(links);
 
-            const header = ["id", "link", "shortLink"];
-            const rows = allLinks.map((l: { id: string; link: string; shortLink: string }): string =>
-                [l.id, l.link, l.shortLink].map((v) => `"${v.replace(/"/g, '""')}"`).join(",")
-            );
-            const csv = [header.join(","), ...rows].join("\n");
+            const header = ["URL Original", "URL Encurtada", "Acessos", "Criado em"];
+            const rows = allLinks.map((link) => [
+                link.link,
+                link.shortLink,
+                link.visits.toString(),
+                link.createdAt?.toISOString() ?? "",
+            ]);
 
-            reply.header("Content-Type", "text/csv; charset=utf-8");
-            return csv;
+            const csvString =
+                [header, ...rows]
+                    .map((row) =>
+                        row.map((val) => `"${val.replace(/"/g, '""')}"`).join(",")
+                    )
+                    .join("\n") + "\n";
+
+            const stream = Readable.from(csvString);
+
+            const { url } = await uploadFileToStorage({
+                folder: "downloads",
+                fileName: "links.csv",
+                contentType: "text/csv",
+                contentStream: stream,
+            });
+
+            return reply.status(200).send({ url });
         }
     );
 };
