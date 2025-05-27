@@ -8,8 +8,11 @@ import { useQueryClient } from '@tanstack/react-query';
 import { LinksQueryKey, useCreateLink } from '../../../queries/link';
 import { toast } from 'react-toastify';
 import AlertMessage from '../../../components/alert';
+import { useSetAtom } from 'jotai';
+import { isCreatingLinkAtom } from '../../../lib/jotai/create-link-atom';
 export default function NewLink() {
     const queryClient = useQueryClient()
+    const setIsCreating = useSetAtom(isCreatingLinkAtom)
 
     const {
         register,
@@ -22,11 +25,13 @@ export default function NewLink() {
 
     const { mutate: createLink, isPending } = useCreateLink({
         onSuccess: () => {
+            setIsCreating(false)
             queryClient.refetchQueries({ queryKey: [LinksQueryKey.LINKS] })
             reset()
             toast.success(AlertMessage({ title: 'Link criado com sucesso', message: 'O link foi criado e está disponível.' }));
         },
         onError: (error) => {
+            setIsCreating(false)
             const message = error.response?.data?.message ?? 'Erro desconhecido'
             console.error('Erro ao criar link:', message)
             toast.error(AlertMessage({ title: 'Erro ao criar link', message: message }));
@@ -34,6 +39,7 @@ export default function NewLink() {
     })
 
     const onSubmit = (data: LinkFormData) => {
+        setIsCreating(true)
         createLink(data)
     }
 

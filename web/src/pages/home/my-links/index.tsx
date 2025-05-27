@@ -6,8 +6,11 @@ import { toast } from 'react-toastify'
 import Loading from '../../../components/loading'
 import AlertMessage from '../../../components/alert'
 import DownloadCsvButton from './download-csv-button'
+import { isCreatingLinkAtom } from '../../../lib/jotai/create-link-atom'
+import { useAtomValue } from 'jotai'
 
 export default function MyLinks() {
+   const isCreatingLink = useAtomValue(isCreatingLinkAtom)
     const { data: links, isLoading, refetch } = useLinks()
 
     const deleteMutation = useDeleteLink({
@@ -63,7 +66,7 @@ export default function MyLinks() {
 
     return (
         <div className="container-my-links">
-            {isLoading && <div className="loading-bar" />}
+            {(isLoading || isCreatingLink) && <div className="loading-bar" />}
 
             <div className="header-my-links">
                 <h4 className="text-lg">Meus Links</h4>
