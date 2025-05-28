@@ -1,10 +1,13 @@
-Brev.ly - Encurtador de URLs 🔗
+# Brev.ly - Encurtador de URLs 🔗
+
 Este repositório contém a solução completa para o Desafio Fase 1 da Rocketseat, com a implementação de um sistema FullStack de encurtador de links.
 
-📌 O que foi desenvolvido
+## 📌 O que foi desenvolvido
+
 O Brev.ly é uma aplicação completa com as seguintes funcionalidades:
 
-🔧 Backend (/server)
+## 🔧 Backend (/server)
+
 API REST construída com Fastify e TypeScript;
 
 Integração com banco de dados usando Drizzle ORM;
@@ -17,7 +20,8 @@ Upload e armazenamento de dados com Cloudflare R2;
 
 Suporte a variáveis de ambiente com .env;
 
-💻 Frontend (/web)
+## 💻 Frontend (/web)
+
 Interface desenvolvida com React, TypeScript e Vite;
 
 Estilização com CSS Modules;
@@ -32,7 +36,7 @@ Integração com a API backend via Axios;
 
 Gerenciamento de estado com Jotai e React Query;
 
-📁 Estrutura do repositório
+## 📁 Estrutura do repositório
 
 - web/      # Aplicação Frontend
 - server/   # API Backend + Configurações DevOps
