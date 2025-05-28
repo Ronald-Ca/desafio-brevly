@@ -30,17 +30,20 @@
     flex-direction: row;
     gap: 32px;
     align-items: flex-start;
-    flex-wrap: wrap;
 }
 
-@media (max-width: 768px) {
-    .container-img {
-        justify-content: center;
-    }
-
-    .cards-home {
+@media (max-width: 960px) {
+    .content-home {
         flex-direction: column;
         align-items: center;
+        justify-content: center;
+    }
+    .cards-home {
+        align-items: center;
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+    .container-img {
         justify-content: center;
     }
 }

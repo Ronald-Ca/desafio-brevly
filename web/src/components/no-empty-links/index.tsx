@@ -1,8 +1,9 @@
+import { IoIosLink } from 'react-icons/io'
 import './style.css'
 export default function NoEmptyLinks() {
     return (
         <div className="container-no-empty-links">
-            <img src="icons/empty-link.svg" alt="Ícone de link" />
+            <IoIosLink size={30}/>
             <h4 className="text-xs">Ainda não existem links cadastrados</h4>
         </div>
     )

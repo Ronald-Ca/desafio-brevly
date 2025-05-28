@@ -1,4 +1,6 @@
+import { RiDeleteBin6Line } from 'react-icons/ri';
 import './style.css'
+import { PiCopyBold } from 'react-icons/pi';
 
 interface LinksProps {
     link: string
@@ -24,8 +26,8 @@ export default function Links({ link, shortLink, visits, onCopy, onDelete }: Lin
             </div>
             <div className="link-actions">
                 <p className='text-sm'>{visits} acessos</p>
-                <button onClick={onCopy}><img src="icons/copy.svg" alt="ícone de copiar" /></button>
-                <button onClick={onDelete}><img src="icons/delete.svg" alt="ícone de deletar" /></button>
+                <button onClick={onCopy}><PiCopyBold className='color-icon' size={18} /></button>
+                <button onClick={onDelete}><RiDeleteBin6Line className='color-icon' size={18} /></button>
             </div>
         </div>
     );

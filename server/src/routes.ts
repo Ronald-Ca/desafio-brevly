@@ -2,7 +2,7 @@ import { z } from "zod";
 import { FastifyPluginAsyncZod } from "fastify-type-provider-zod";
 import { db } from "./infra/db";
 import { links } from "./infra/db/schemas/links";
-import { eq } from "drizzle-orm";
+import { desc, eq } from "drizzle-orm";
 import { uuidv7 } from "uuidv7";
 import { Readable } from "node:stream";
 import { uploadFileToStorage } from "./functions/upload-csv";
@@ -67,7 +67,10 @@ export const routes: FastifyPluginAsyncZod = async (app) => {
             },
         },
         async (_, reply) => {
-            const allLinks = await db.select().from(links);
+            const allLinks = await db
+                .select()
+                .from(links)
+                .orderBy(desc(links.createdAt));
             return reply.status(200).send(allLinks);
         }
     );

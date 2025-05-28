@@ -46,22 +46,20 @@ export default function NewLink() {
     return (
         <form className="container-new-link" onSubmit={handleSubmit(onSubmit)}>
             <h4 className="text-lg">Novo Link</h4>
+            
+            <Input
+                label="Link Original"
+                placeholder="https://exemplo.com.br"
+                {...register('link')}
+                error={errors.link?.message}
+            />
 
-            <div className="container-inputs">
-                <Input
-                    label="Link Original"
-                    placeholder="https://exemplo.com.br"
-                    {...register('link')}
-                    error={errors.link?.message}
-                />
-
-                <Input
-                    label="Link Encurtado"
-                    prefix="brev.ly/"
-                    {...register('shortLink')}
-                    error={errors.shortLink?.message}
-                />
-            </div>
+            <Input
+                label="Link Encurtado"
+                prefix="brev.ly/"
+                {...register('shortLink')}
+                error={errors.shortLink?.message}
+            />
 
             <Button type="submit" disabled={isPending}>
                 {isPending ? 'Salvando...' : 'Salvar link'}

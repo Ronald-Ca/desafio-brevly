@@ -59,10 +59,8 @@
 .link-actions button:hover {
     background-color: var(--gray-300);
 }
-
-.link-actions > button > img {
-    width: 14px;
-    height: 14px;
+.color-icon {
+    color: var(--gray-600);
 }
 
 @media (max-width: 600px) {
