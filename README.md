@@ -33,9 +33,6 @@ Integração com a API backend via Axios;
 Gerenciamento de estado com Jotai e React Query;
 
 📁 Estrutura do repositório
-bash
-Copiar
-Editar
-.
-├── web/      # Aplicação Frontend
-└── server/   # API Backend + Configurações DevOps
+
+- web/      # Aplicação Frontend
+- server/   # API Backend + Configurações DevOps
