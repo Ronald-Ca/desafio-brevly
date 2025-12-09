@@ -1,5 +1,7 @@
 # Brev.ly - Encurtador de URLs 🔗
 
+![preview](./preview/preview.png)
+
 Este repositório contém a solução completa para o Desafio Fase 1 da Rocketseat, com a implementação de um sistema FullStack de encurtador de links.
 
 ## 📌 O que foi desenvolvido
